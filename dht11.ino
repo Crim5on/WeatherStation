@@ -1,45 +1,26 @@
-#include "bit.h"
-#include "dhtDataSet.h"
-#include "dhtSensor.h"
+#include "dhtSensor.hpp"
 
-#define DATA_LINE 2
 #define SAMPLING_RATE_MS 1000
 
+static DHTSensor dhtSensor = DHTSensor(2);
 
-
-
-
-
-/* Arduino Standard Code */
-
-// global data set
-static DHTdataSet g_dataSet;
-static double g_temperature = g_dataSet.absolutZero;
-static double g_humidity = -1;
 
 void setup() 
 {
     Serial.begin(9600);
-    initiateDHTSensor();
+    dhtSensor.init();
 }
 
 
 
 void loop() 
 {
-    performHandshake();
-
-    // RECEIVE NEW DATA:
-    read40BitsIntoDataSet(DATA_LINE, g_dataSet);
-
-    // VALIDATE DATA:
-    if(g_dataSet.isValid()){
-        g_temperature = g_dataSet.getTemperature();
-        g_humidity = g_dataSet.getHumidity();
-    }
+    dhtSensor.loadData();
+    double temperature = dhtSensor.getTemperature();
+    double humidity = dhtSensor.getHumidity();
 
     // PRINT DATA:
-    Serial.println("temperature: " + (String)g_temperature + "\thumidity: " + (String)g_humidity);
+    Serial.println("temperature: " + (String)temperature + "\thumidity: " + (String)humidity);
 
     delay(SAMPLING_RATE_MS);
 }

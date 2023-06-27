@@ -1,4 +1,4 @@
-# Embedded Weather Station
+# WeatherStation
 Weather station feauturing the DHT11 sensor for temperature and humidity. Integration of a 2x16 LCD display is planed. Should support Arduino Uno as well as STM32 Nuclueo boards.
 
 
@@ -7,7 +7,7 @@ Weather station feauturing the DHT11 sensor for temperature and humidity. Integr
 
 # Components
 
-##DHT11
+## DHT11
 
 * Supply voltage (VDD): 3V3 - 5V5
 * Supply current: 0.3mA while measuring, 60uA while in standby
@@ -19,7 +19,7 @@ Weather station feauturing the DHT11 sensor for temperature and humidity. Integr
 
 
 
-##DHT22
+## DHT22
 
 * Supply voltage (VDD): 3V3 - 5V5
 * Supply current: 2.5mA while measuring
@@ -31,3 +31,4 @@ Weather station feauturing the DHT11 sensor for temperature and humidity. Integr
 
 
 ## LCD Display
+* Standard 16X2 LCD display
