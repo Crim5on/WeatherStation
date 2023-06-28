@@ -1,5 +1,5 @@
 #pragma once
-#include "dhtDataSet.hpp"
+#include "dhtDataSet.h"
 
 
 /** interface class for the dht single wire bus protocol */
@@ -7,7 +7,6 @@ class DHT_PROTOCOL_INTERFACE
 {
     protected:
         DHTdataSet rawData;
-
 
     protected:
 

@@ -1,4 +1,4 @@
-#include "arduino_hal/dhtSensor_Arduino.hpp"
+#include "dhtSensor_Arduino.h"
 
 #define SAMPLING_RATE_MS 1000
 
