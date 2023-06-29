@@ -3,8 +3,8 @@ Weather station feauturing the DHT11 sensor for temperature and humidity. Integr
 
 
 ## Directories
-* `WeatherStation_Arduino` contains full implementation for Arduino Uno
-* `WeatherStation_STM32` contains full implementation for STM32 Nucleo
+* `weatherStationArduino` contains full implementation for Arduino Uno
+* `weatherStationSTM32` contains full implementation for STM32 Nucleo
 
 
 # Components
