@@ -1,9 +1,20 @@
-#pragma once
+/*
+ * DHTdataSet.h
+ *
+ *  Created on: Jun 29, 2023
+ *      Author: sandro
+ */
+
+#ifndef INC_DHTDATASET_H_
+#define INC_DHTDATASET_H_
+
 #include "bit.h"
+#include <stdlib.h>
+#include <stdbool.h>
 
 /** DHT single wire bus protocol: 40-bit transfer */
 typedef struct DHTdataSet
-{       
+{
     uint8_t humiByte_hi;
     uint8_t humiByte_lo;    // always 0 for dht11
     uint8_t tempByte_hi;
@@ -57,3 +68,5 @@ inline double dhtDataSet_calcTemperature(const DHTdataSet* dataSet)
         return EXIT_FAILURE;    // won't happen
     }
 }
+
+#endif /* INC_DHTDATASET_H_ */
