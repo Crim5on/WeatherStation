@@ -1,5 +1,5 @@
 # Embedded Weather Station
-An embedded weather station feauturing a DHTxx series temperature and humidity sensor. Integration of a 2x16 LCD display is planed. Shall support Arduino Uno and STM32 Nuclueo boards.
+An embedded weather station feauturing a DHTxx series temperature and humidity sensor. Further sensors can be added. Integration of a 2x16 LCD display is planed. Shall support Arduino Uno and STM32 Nuclueo boards.
 
 
 ## Directories
