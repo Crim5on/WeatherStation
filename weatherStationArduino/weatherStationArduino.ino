@@ -22,7 +22,7 @@ void pinToggle(uint8_t pin)
 void setup() 
 {
     Serial.begin(115200);
-    Serial.print("\n--------------------------------------------------\n");
+    Serial.println("--------------------------------------------------");
     dht_protocol_init(DHT_DATA_PIN);
     pinMode(LED_BUILTIN, OUTPUT);
     g_ledPinState = LOW;
