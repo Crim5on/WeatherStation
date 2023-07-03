@@ -21,6 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "DHTprotocol.h"
 #include "DHTdataSet.h"
 #include "helpers.h"
 #include <stdlib.h>
@@ -38,7 +39,7 @@
 /* USER CODE BEGIN PD */
 #define SAMPLING_RATE_MS 1000
 #define DHT_DATA_PIN 2
-#define ABSOLUT_ZERO -273.15
+#define ABSOLUT_MIN_VAL -128
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -103,35 +104,43 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 	static DHTdataSet dataSet;
-	static double temperature = ABSOLUT_ZERO;
-	static double humidity = -1;
+	static int8_t temperature = ABSOLUT_MIN_VAL;
+	static int8_t humidity = ABSOLUT_MIN_VAL;
+	char stringBuffer[255];
+
 	HAL_Delay(1000);	// wait for one second after startup
 	HAL_TIM_Base_Start(&htim10);	// start timer
+
+	(void)sprintf(stringBuffer, "--------------------------------------------------");
+	printSerialLine(&huart2, stringBuffer);
+
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1) {
-		//GPIO_PinState dataPinState = HAL_GPIO_ReadPin(dhtDataPin_GPIO_Port, dhtDataPin_Pin);
+		/*// testcode for microSeconds timer.
 		uint16_t t1 = __HAL_TIM_GET_COUNTER(&htim10);
 		HAL_Delay(1); // 1ms = 1000us
 		uint16_t t2 = __HAL_TIM_GET_COUNTER(&htim10);
 		uint16_t t_passed = t2 - t1;
+		*/
 
-		// prepare empty string:
-		const uint8_t numLength = 10;
-		char t_passed_string[numLength + 2 + 1];
-		memset(t_passed_string, '\0', sizeof(t_passed_string));
-		// convert number to string:
-		(void)itoa(t_passed, t_passed_string, 10);	// 10 is the base of the number
-		(void)strncat(t_passed_string, "\n\r", 2);	// adds nullByte
+		if(dht_protocol_readData(&htim10, dhtDataPin_GPIO_Port, dhtDataPin_Pin, &dataSet)){
+			temperature = dhtDataSet_calcTemperature(&dataSet);
+			humidity = dhtDataSet_calcHumidity(&dataSet);
+		}
+		else{
+			temperature = ABSOLUT_MIN_VAL;
+			humidity = ABSOLUT_MIN_VAL;
+		}
 
+
+		// print value:
+		(void)sprintf(stringBuffer, "%i", (int)temperature);
+		printSerialLine(&huart2, stringBuffer);
 		//Serial.println("temperature: " + (String)g_temperature + "\thumidity: " + (String)g_humidity);
-		//TODO: implement helper function: void serialPrint(const double temperature, const double humidity);
-		//const unsigned char msg[] = "Hello from Nucleo!\n\r";
-		const uint32_t timeout_UART = 10;
-		HAL_UART_Transmit(&huart2, t_passed_string, sizeof(t_passed_string), timeout_UART);
 
     /* USER CODE END WHILE */
 
@@ -204,7 +213,7 @@ static void MX_TIM10_Init(void)
 
   /* USER CODE END TIM10_Init 1 */
   htim10.Instance = TIM10;
-  htim10.Init.Prescaler = 84-1;
+  htim10.Init.Prescaler = 84*2-1;
   htim10.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim10.Init.Period = 65536-1;
   htim10.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;

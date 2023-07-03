@@ -9,7 +9,7 @@
 /** @returns waited time in microseconds */
 static unsigned long busyWaitWhile(const uint8_t pin, const bool val)
 {
-    uint32_t loopCount = 0;
+    uint16_t loopCount = 0;
     unsigned long timeStampStart = micros();
     while((digitalRead(pin) == val) && (loopCount < LOOP_UPPER_BOUND)){
         ; // wait
@@ -29,7 +29,7 @@ static inline bool pulse2Bit(const unsigned long pulseTime_us)
     return ((pulseTime_us > 50) && (pulseTime_us < 90));
 }
 
-/** @returns true if protocol handshake was sucessful */
+/** @returns true if protocol handshake was successful */
 static bool dht_protocol_performHandshake(const uint8_t dataPin)
 {
     // SEND START SIGNAL: 
@@ -74,7 +74,7 @@ static bool dht_protocol_receive40bits(const uint8_t dataPin, DHTdataSet* dataSe
         else if((i >= 8) && (i <= 15)){     // second byte
             BIT_TO_VAL(dataSet->humiByte_lo, (15 - i), pulse2Bit(hiTime));
         }
-        else if((i >= 16) && (i <= 23)){     // thrid byte
+        else if((i >= 16) && (i <= 23)){     // third byte
             BIT_TO_VAL(dataSet->tempByte_hi, (23 - i), pulse2Bit(hiTime));
         }
         else if((i >= 24) && (i <= 31)){    // fourth byte
