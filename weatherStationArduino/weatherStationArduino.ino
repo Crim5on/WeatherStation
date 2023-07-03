@@ -33,7 +33,7 @@ void setup()
 
 void loop() 
 {
-    pinToggle(LED_BUILTIN);
+    //pinToggle(LED_BUILTIN);
 
     if(dht_protocol_readData(DHT_DATA_PIN, &g_dataSet)){
         g_temperature = dhtDataSet_calcTemperature(&g_dataSet);
