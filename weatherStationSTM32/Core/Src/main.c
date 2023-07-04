@@ -74,7 +74,8 @@ static void MX_TIM10_Init(void);
  * @brief  The application entry point.
  * @retval int
  */
-int main(void) {
+int main(void)
+{
 	/* USER CODE BEGIN 1 */
 
 	/* USER CODE END 1 */
@@ -109,8 +110,7 @@ int main(void) {
 	HAL_Delay(1000);	// wait for one second after startup
 	HAL_TIM_Base_Start(&htim10);	// start timer
 
-	(void) sprintf(stringBuffer,
-			"--------------------------------------------------");
+	(void) sprintf(stringBuffer, "--------------------------------------------------");
 	printSerialLine(&huart2, stringBuffer);
 
 	/* USER CODE END 2 */
@@ -125,11 +125,11 @@ int main(void) {
 		 uint16_t t_passed = t2 - t1;
 		 */
 
-		if (dht_protocol_readData(&htim10, dhtDataPin_GPIO_Port, dhtDataPin_Pin,
-				&dataSet)) {
+		if (dht_protocol_readData(&htim10, dhtDataPin_GPIO_Port, dhtDataPin_Pin, &dataSet)) {
 			temperature = dhtDataSet_calcTemperature(&dataSet);
 			humidity = dhtDataSet_calcHumidity(&dataSet);
-		} else {
+		}
+		else {
 			temperature = ABSOLUT_MIN_VAL;
 			humidity = ABSOLUT_MIN_VAL;
 		}
@@ -152,7 +152,8 @@ int main(void) {
  * @brief System Clock Configuration
  * @retval None
  */
-void SystemClock_Config(void) {
+void SystemClock_Config(void)
+{
 	RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
 	RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
 
@@ -179,8 +180,7 @@ void SystemClock_Config(void) {
 
 	/** Initializes the CPU, AHB and APB buses clocks
 	 */
-	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
-			| RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
 	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
 	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
 	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
@@ -196,7 +196,8 @@ void SystemClock_Config(void) {
  * @param None
  * @retval None
  */
-static void MX_TIM10_Init(void) {
+static void MX_TIM10_Init(void)
+{
 
 	/* USER CODE BEGIN TIM10_Init 0 */
 
@@ -225,7 +226,8 @@ static void MX_TIM10_Init(void) {
  * @param None
  * @retval None
  */
-static void MX_USART2_UART_Init(void) {
+static void MX_USART2_UART_Init(void)
+{
 
 	/* USER CODE BEGIN USART2_Init 0 */
 
@@ -256,7 +258,8 @@ static void MX_USART2_UART_Init(void) {
  * @param None
  * @retval None
  */
-static void MX_GPIO_Init(void) {
+static void MX_GPIO_Init(void)
+{
 	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
 	/* USER CODE BEGIN MX_GPIO_Init_1 */
 	/* USER CODE END MX_GPIO_Init_1 */
@@ -301,7 +304,8 @@ static void MX_GPIO_Init(void) {
  * @brief  This function is executed in case of error occurrence.
  * @retval None
  */
-void Error_Handler(void) {
+void Error_Handler(void)
+{
 	/* USER CODE BEGIN Error_Handler_Debug */
 	/* User can add his own implementation to report the HAL error return state */
 	__disable_irq();
