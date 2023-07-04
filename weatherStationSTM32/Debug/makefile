@@ -60,8 +60,8 @@ all: main-build
 main-build: weatherStationSTM32.elf secondary-outputs
 
 # Tool invocations
-weatherStationSTM32.elf weatherStationSTM32.map: $(OBJS) $(USER_OBJS) /home/sandro/STM32CubeIDE/workspace_1.12.1/weatherStationSTM32/STM32F401RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "weatherStationSTM32.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/sandro/STM32CubeIDE/workspace_1.12.1/weatherStationSTM32/STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="weatherStationSTM32.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+weatherStationSTM32.elf weatherStationSTM32.map: $(OBJS) $(USER_OBJS) /home/sandro/Documents/Repositories/WeatherStation/weatherStationSTM32/STM32F401RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "weatherStationSTM32.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/sandro/Documents/Repositories/WeatherStation/weatherStationSTM32/STM32F401RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="weatherStationSTM32.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
