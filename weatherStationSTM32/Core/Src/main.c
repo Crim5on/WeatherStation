@@ -24,10 +24,7 @@
 #include "DHTprotocol.h"
 #include "DHTdataSet.h"
 #include "helpers.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdbool.h>
-#include <string.h>
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -105,25 +102,17 @@ int main(void)
 	static DHTdataSet dataSet;
 	static int8_t temperature = ABSOLUT_MIN_VAL;
 	static int8_t humidity = ABSOLUT_MIN_VAL;
-	char stringBuffer[255];
 
 	HAL_Delay(1000);	// wait for one second after startup
 	HAL_TIM_Base_Start(&htim10);	// start timer
 
-	(void) sprintf(stringBuffer, "--------------------------------------------------");
-	printSerialLine(&huart2, stringBuffer);
+	printSerialLine(&huart2, "--------------------------------------------------");
 
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
 	while (1) {
-		/*// testcode for microSeconds timer.
-		 uint16_t t1 = __HAL_TIM_GET_COUNTER(&htim10);
-		 HAL_Delay(1); // 1ms = 1000us
-		 uint16_t t2 = __HAL_TIM_GET_COUNTER(&htim10);
-		 uint16_t t_passed = t2 - t1;
-		 */
 
 		if (dht_protocol_readData(&htim10, dhtDataPin_GPIO_Port, dhtDataPin_Pin, &dataSet)) {
 			temperature = dhtDataSet_calcTemperature(&dataSet);
@@ -133,11 +122,7 @@ int main(void)
 			temperature = ABSOLUT_MIN_VAL;
 			humidity = ABSOLUT_MIN_VAL;
 		}
-
-		// print value:
-		(void) sprintf(stringBuffer, "%i", (int) temperature);
-		printSerialLine(&huart2, stringBuffer);
-		//Serial.println("temperature: " + (String)g_temperature + "\thumidity: " + (String)g_humidity);
+		printValuesSerialLine(&huart2, temperature, humidity);
 
 		/* USER CODE END WHILE */
 
