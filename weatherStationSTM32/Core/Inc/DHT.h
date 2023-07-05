@@ -10,10 +10,10 @@
 
 typedef struct
 {
-	float Temperature;
-	float Humidity;
-} DHT_DataTypedef;
+	float temperature;
+	float humidity;
+} DHTdataSet;
 
-bool DHT_GetData(DHT_DataTypedef *DHT_Data);
+bool DHT_GetData(DHTdataSet *DHT_Data);
 
 #endif /* INC_DHT_H_ */

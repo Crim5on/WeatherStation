@@ -95,7 +95,7 @@ int main(void)
 	MX_USART2_UART_Init();
 	/* USER CODE BEGIN 2 */
 
-	static DHT_DataTypedef DHTdataSet;
+	static DHTdataSet DHTdataSet;
 	static float temperature;
 	static float humidity;
 
@@ -110,8 +110,8 @@ int main(void)
 	while (1) {
 
 		if (DHT_GetData(&DHTdataSet)) {
-			temperature = DHTdataSet.Temperature;
-			humidity = DHTdataSet.Humidity;
+			temperature = DHTdataSet.temperature;
+			humidity = DHTdataSet.humidity;
 		}
 		else {
 			temperature = ABSOLUT_MIN_VAL;
