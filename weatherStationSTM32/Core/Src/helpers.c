@@ -2,7 +2,7 @@
  * helpers.c
  *
  *  Created on: Jul 5, 2023
- *      Author: sandro
+ *      Author: Sandro Schnetzer
  */
 
 #include "stm32f4xx_hal.h"

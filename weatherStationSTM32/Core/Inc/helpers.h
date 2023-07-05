@@ -2,7 +2,7 @@
  * helpers.h
  *
  *  Created on: Jul 3, 2023
- *      Author: sandro
+ *      Author: Sandro Schnetzer
  */
 
 #ifndef INC_HELPERS_H_

@@ -3,6 +3,9 @@
  *
  *  Created on: Jun 28, 2020
  *      Author: Controllerstech.com
+ *
+ *	Modified on: July 05, 2023
+ *		Author: Sandro Schnetzer
  */
 
 #ifndef DHT_H_
