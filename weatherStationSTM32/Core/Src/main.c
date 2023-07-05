@@ -21,9 +21,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "DHTprotocol.h"
-#include "DHTdataSet.h"
+
 #include "helpers.h"
+#include "DHT.h"
 
 /* USER CODE END Includes */
 
@@ -34,8 +34,9 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define SAMPLING_RATE_MS 3000
+#define SAMPLING_RATE_MS 2000
 #define ABSOLUT_MIN_VAL -128
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -44,8 +45,6 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-TIM_HandleTypeDef htim10;
-
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
@@ -56,7 +55,6 @@ UART_HandleTypeDef huart2;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
-static void MX_TIM10_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -95,18 +93,15 @@ int main(void)
 	/* Initialize all configured peripherals */
 	MX_GPIO_Init();
 	MX_USART2_UART_Init();
-	MX_TIM10_Init();
 	/* USER CODE BEGIN 2 */
 
-	static DHTdataSet dataSet;
-	static int8_t temperature = ABSOLUT_MIN_VAL;
-	static int8_t humidity = ABSOLUT_MIN_VAL;
-
-	HAL_Delay(1000);	// wait for one second after startup
-	HAL_TIM_Base_Start(&htim10);	// start timer
+	static DHT_DataTypedef DHTdataSet;
+	static float temperature;
+	static float humidity;
 
 	char stringBuffer[] = "--------------------------------------------------";
 	printSerialLine(&huart2, stringBuffer);
+	HAL_Delay(1000);	// wait for one second after startup
 
 	/* USER CODE END 2 */
 
@@ -114,20 +109,19 @@ int main(void)
 	/* USER CODE BEGIN WHILE */
 	while (1) {
 
-		if (dht_protocol_readData(&htim10, dhtDataPin_GPIO_Port, dhtDataPin_Pin, &dataSet)) {
-			temperature = dhtDataSet_calcTemperature(&dataSet);
-			humidity = dhtDataSet_calcHumidity(&dataSet);
+		if (DHT_GetData(&DHTdataSet)) {
+			temperature = DHTdataSet.Temperature;
+			humidity = DHTdataSet.Humidity;
 		}
 		else {
 			temperature = ABSOLUT_MIN_VAL;
 			humidity = ABSOLUT_MIN_VAL;
 		}
 
-		printValuesSerialLine(&huart2, temperature, humidity);
-
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
+		printValuesSerialLine(&huart2, (int) temperature, (int) humidity);
 		HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
 		HAL_Delay(SAMPLING_RATE_MS);
 	}
@@ -175,36 +169,6 @@ void SystemClock_Config(void)
 	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
 		Error_Handler();
 	}
-}
-
-/**
- * @brief TIM10 Initialization Function
- * @param None
- * @retval None
- */
-static void MX_TIM10_Init(void)
-{
-
-	/* USER CODE BEGIN TIM10_Init 0 */
-
-	/* USER CODE END TIM10_Init 0 */
-
-	/* USER CODE BEGIN TIM10_Init 1 */
-
-	/* USER CODE END TIM10_Init 1 */
-	htim10.Instance = TIM10;
-	htim10.Init.Prescaler = 84 * 2 - 1;
-	htim10.Init.CounterMode = TIM_COUNTERMODE_UP;
-	htim10.Init.Period = 65536 - 1;
-	htim10.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-	htim10.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-	if (HAL_TIM_Base_Init(&htim10) != HAL_OK) {
-		Error_Handler();
-	}
-	/* USER CODE BEGIN TIM10_Init 2 */
-
-	/* USER CODE END TIM10_Init 2 */
-
 }
 
 /**
@@ -271,12 +235,6 @@ static void MX_GPIO_Init(void)
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
-
-	/*Configure GPIO pin : dhtDataPin_Pin */
-	GPIO_InitStruct.Pin = dhtDataPin_Pin;
-	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	HAL_GPIO_Init(dhtDataPin_GPIO_Port, &GPIO_InitStruct);
 
 	/* USER CODE BEGIN MX_GPIO_Init_2 */
 	/* USER CODE END MX_GPIO_Init_2 */

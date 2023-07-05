@@ -20,8 +20,7 @@
 #define HIGH 1
 
 /** @returns waited time in microseconds */
-static uint16_t busyWaitWhile(TIM_HandleTypeDef *timerHandle, GPIO_TypeDef *port, uint16_t dataPin,
-		const GPIO_PinState val)
+static uint16_t busyWaitWhile(TIM_HandleTypeDef *timerHandle, GPIO_TypeDef *port, uint16_t dataPin, const GPIO_PinState val)
 {
 	uint16_t loopCount = 0;
 	uint16_t timeStampStart = __HAL_TIM_GET_COUNTER(timerHandle);
@@ -47,24 +46,15 @@ static inline bool pulse2Bit(const uint16_t pulseTime_us)
 /** @returns true if protocol handshake was successful */
 static bool dht_protocol_performHandshake(TIM_HandleTypeDef *timerHandle, GPIO_TypeDef *port, uint16_t dataPin)
 {
-	/*Re-Configure GPIO pin to OUTPUT : dhtDataPin_Pin */
-	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
-	GPIO_InitStruct.Pin = dataPin;
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	HAL_GPIO_Init(port, &GPIO_InitStruct);
-
-	// SEND START SIGNAL:
+	(void)DWT_Delay_Init();
+	pinModeOutput(port, dataPin);
 	HAL_GPIO_WritePin(port, dataPin, LOW);
-	HAL_Delay(20);  // pull LOW for >18ms
+	//HAL_Delay(20);  // pull LOW for >18ms		// is it good to mix two different delay modes??
+	delay_us(20000);
 	HAL_GPIO_WritePin(port, dataPin, HIGH);
-	delayMicroseconds(timerHandle, 10);  // to ensure pin is set high
-
-	/*Re-Configure GPIO pin to INPUT : dhtDataPin_Pin */
-	GPIO_InitStruct.Pin = dataPin;
-	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	HAL_GPIO_Init(port, &GPIO_InitStruct);
+	//delayMicroseconds(timerHandle, 20);  // to ensure pin is set high
+	delay_us(20);
+	pinModeInput(port, dataPin);
 
 	// READ RESPONSE SIGNAL: wait until sensor pulls the line low (80us) and high (80us)
 	uint16_t loTime = busyWaitWhile(timerHandle, port, dataPin, LOW);
@@ -76,8 +66,7 @@ static bool dht_protocol_performHandshake(TIM_HandleTypeDef *timerHandle, GPIO_T
 /** reads 40 bits of data and writes them to the according byte in dataSet.
  @returns true if data read passed parity check.
  */
-static bool dht_protocol_receive40bits(TIM_HandleTypeDef *timerHandle, GPIO_TypeDef *port, uint16_t dataPin,
-		DHTdataSet *dataSet)
+static bool dht_protocol_receive40bits(TIM_HandleTypeDef *timerHandle, GPIO_TypeDef *port, uint16_t dataPin, DHTdataSet *dataSet)
 {
 	/*  BYTE:   [ 7 | 6 | 5 | 4 | 3 | 2 | 1 | 0 ]
 

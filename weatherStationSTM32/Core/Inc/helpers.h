@@ -8,42 +8,26 @@
 #ifndef INC_HELPERS_H_
 #define INC_HELPERS_H_
 
-#include "stm32f4xx_hal.h"
-#include <stdio.h>
-#include "string.h"
+#define HIGH 1
+#define LOW 0
 
-#define UART_TIMEOUT 100
-
-/** prints string on serial line. */
-void printSerialLine(UART_HandleTypeDef *handle, char stringBuffer[])
-{
-	(void) strcat(stringBuffer, "\r\n");	// adds newLine and nullByte.
-	HAL_UART_Transmit(handle, (uint8_t*) stringBuffer, strlen(stringBuffer), UART_TIMEOUT);
-}
+#include <stdbool.h>
 
 /** prints string on serial line. */
-void printValuesSerialLine(UART_HandleTypeDef *handle, int temperature, int humidity)
-{
-	char stringBuffer[255] = { '\0' };
-	char numberString[8] = { '\0' };
-	// build serial line:
-	(void) strcat(stringBuffer, "Temperature: ");
-	(void) sprintf(numberString, "%i", temperature);
-	(void) strcat(stringBuffer, numberString);
-	(void) strcat(stringBuffer, "*C \tHumidity: ");
-	(void) sprintf(numberString, "%i", humidity);
-	(void) strcat(stringBuffer, numberString);
-	(void) strcat(stringBuffer, "%");
-	// send to uart to print (appends line-break)
-	printSerialLine(handle, stringBuffer);
-}
+void printSerialLine(UART_HandleTypeDef *handle, char stringBuffer[]);
 
-void delayMicroseconds(TIM_HandleTypeDef *timerHandle, uint16_t delay)
-{
-	uint16_t timeStampStart = __HAL_TIM_GET_COUNTER(timerHandle);
-	while ((__HAL_TIM_GET_COUNTER(timerHandle) - timeStampStart) < delay) {
-		; // wait
-	}
-}
+/** prints string on serial line. */
+void printValuesSerialLine(UART_HandleTypeDef *handle, int temperature, int humidity);
+
+void pinModeOutput(GPIO_TypeDef *port, uint16_t pin);
+
+void pinModeInput(GPIO_TypeDef *port, uint16_t pin);
+
+uint32_t DWT_Delay_Init(void);
+
+void delay_us(volatile uint32_t microseconds);
+
+/** @returns true if waited successfully, false if timed out. */
+bool busyWaitWhile(GPIO_TypeDef *port, uint16_t pin, bool val);
 
 #endif /* INC_HELPERS_H_ */
