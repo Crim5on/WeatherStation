@@ -30,9 +30,10 @@ void printValuesSerialLine(UART_HandleTypeDef *handle, int temperature, int humi
 	(void) strcat(stringBuffer, "Temperature: ");
 	(void) sprintf(numberString, "%i", temperature);
 	(void) strcat(stringBuffer, numberString);
-	(void) strcat(stringBuffer, "\tHumidity: ");
+	(void) strcat(stringBuffer, "*C \tHumidity: ");
 	(void) sprintf(numberString, "%i", humidity);
 	(void) strcat(stringBuffer, numberString);
+	(void) strcat(stringBuffer, "%");
 	// send to uart to print (appends line-break)
 	printSerialLine(handle, stringBuffer);
 }

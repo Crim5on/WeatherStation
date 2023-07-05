@@ -3,11 +3,11 @@
 
 #define DHT_DATA_PIN 2
 #define SAMPLING_RATE_MS 2000
-#define ABSOLUT_ZERO -273.15
+#define ABSOLUT_MIN_VAL -128
 
 static DHTdataSet g_dataSet;
-static double g_temperature;
-static double g_humidity;
+static int8_t g_temperature;
+static int8_t g_humidity;
 static bool g_ledPinState;
 
 
@@ -26,22 +26,22 @@ void setup()
     dht_protocol_init(DHT_DATA_PIN);
     pinMode(LED_BUILTIN, OUTPUT);
     g_ledPinState = LOW;
-    g_temperature = ABSOLUT_ZERO;
-    g_humidity = -1;
+    g_temperature = ABSOLUT_MIN_VAL;
+    g_humidity = ABSOLUT_MIN_VAL;
 }
 
 
 void loop() 
 {
-    //pinToggle(LED_BUILTIN);
+    pinToggle(LED_BUILTIN);
 
     if(dht_protocol_readData(DHT_DATA_PIN, &g_dataSet)){
         g_temperature = dhtDataSet_calcTemperature(&g_dataSet);
         g_humidity = dhtDataSet_calcHumidity(&g_dataSet);
     }
     else{
-        g_temperature = ABSOLUT_ZERO;
-        g_humidity = -1;
+        g_temperature = ABSOLUT_MIN_VAL;
+        g_humidity = ABSOLUT_MIN_VAL;
     }
     
     Serial.println("Temperature: " + (String)g_temperature + "*C\tHumidity: " + (String)g_humidity + "%");

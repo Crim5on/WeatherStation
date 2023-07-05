@@ -34,8 +34,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define SAMPLING_RATE_MS 1000
-#define DHT_DATA_PIN 2
+#define SAMPLING_RATE_MS 3000
 #define ABSOLUT_MIN_VAL -128
 /* USER CODE END PD */
 
@@ -106,7 +105,8 @@ int main(void)
 	HAL_Delay(1000);	// wait for one second after startup
 	HAL_TIM_Base_Start(&htim10);	// start timer
 
-	printSerialLine(&huart2, "--------------------------------------------------");
+	char stringBuffer[] = "--------------------------------------------------";
+	printSerialLine(&huart2, stringBuffer);
 
 	/* USER CODE END 2 */
 
@@ -122,6 +122,7 @@ int main(void)
 			temperature = ABSOLUT_MIN_VAL;
 			humidity = ABSOLUT_MIN_VAL;
 		}
+
 		printValuesSerialLine(&huart2, temperature, humidity);
 
 		/* USER CODE END WHILE */

@@ -20,19 +20,19 @@ inline bool dhtDataSet_parityCheck(const DHTdataSet* dataSet)
 }
 
 /** @returns humidity from raw data as double */
-inline double dhtDataSet_calcHumidity(const DHTdataSet* dataSet)
+inline int8_t dhtDataSet_calcHumidity(const DHTdataSet* dataSet)
 {
     if(dataSet->humiByte_lo == 0){
-        return (double)dataSet->humiByte_hi;
+        return (int8_t)dataSet->humiByte_hi;
     }
     else{
         uint16_t humidity_x10 = (dataSet->humiByte_hi << 8 | dataSet->humiByte_lo);
-        return (double)(humidity_x10 * 0.1);
+        return (int8_t)(humidity_x10 * 0.1);
     }
 }
 
 /** @returns temperature from raw data as double */
-inline double dhtDataSet_calcTemperature(const DHTdataSet* dataSet)
+inline int8_t dhtDataSet_calcTemperature(const DHTdataSet* dataSet)
 {
     uint8_t highByte = dataSet->tempByte_hi;
     uint8_t lowByte = dataSet->tempByte_lo;
@@ -40,18 +40,18 @@ inline double dhtDataSet_calcTemperature(const DHTdataSet* dataSet)
     BIT_CLR(highByte, 7);
 
     if((lowByte == 0) && (!isNegativeValue)){
-        return (double)highByte;
+        return (int8_t)highByte;
     }
     else if((lowByte == 0) && (isNegativeValue)){
-        return (double)(0 - highByte);
+        return (int8_t)(0 - highByte);
     }
     else if((lowByte != 0) && (!isNegativeValue)){
         uint16_t temperature_x10 = (highByte << 8 | lowByte);
-        return (double)(temperature_x10 * 0.1);
+        return (int8_t)(temperature_x10 * 0.1);
     }
     else if((lowByte != 0) && (isNegativeValue)){
         uint16_t temperature_x10 = (highByte << 8 | lowByte);
-        return (double)(temperature_x10 * -0.1);
+        return (int8_t)(temperature_x10 * -0.1);
     }
     else{
         return EXIT_FAILURE;    // won't happen
