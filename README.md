@@ -1,5 +1,5 @@
 # Embedded Weather Station
-An embedded weather station feauturing a DHTxx series temperature and humidity sensor. Further sensors can be added. Integration of a 2x16 LCD display is planed. Shall support Arduino Uno and STM32 Nuclueo boards.
+An embedded weather station feauturing a DHTxx series temperature and humidity sensor and a 2x16 LCD display for data output. Integration of a barometer for thunderstorm detection and buzzer alarm is planed. Supports Arduino Uno and STM32 Nuclueo boards. (might need to be upgraded to a Arduino Mega bc of pin shortage)
 
 
 ## Directories
@@ -32,6 +32,13 @@ An embedded weather station feauturing a DHTxx series temperature and humidity s
 * Standard 16X2 LCD display compatible with the Hitachi HD44780 driver
 * 10KΩ potentiometer for adjusting contrast (empirically determined value = xxΩ)
 * 220Ω resisitor required to drop 5V supply voltage for backlight led's
+
+
+## Barometer
+Evaluate: https://store.arduino.cc/products/grove-barometer-sensor-bmp280?variant=35573310980247
+
+## Buzzer
+  
 
 ## MCUs
 * Arduino Uno Rev3 SMD  (tested)
