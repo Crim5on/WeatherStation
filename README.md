@@ -28,9 +28,10 @@ An embedded weather station feauturing a DHTxx series temperature and humidity s
 * dimesions: 15.1mm x 25mm x 7.7mm - (0.1" pin spacing)
 
 
-
 ## LCD Display
-* Standard 16X2 LCD display
+* Standard 16X2 LCD display compatible with the Hitachi HD44780 driver
+* 10KΩ potentiometer for adjusting contrast (empirically determined value = xxΩ)
+* 220Ω resisitor required to drop 5V supply voltage for backlight led's
 
 ## MCUs
 * Arduino Uno Rev3 SMD  (tested)
