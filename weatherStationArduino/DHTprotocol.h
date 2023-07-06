@@ -88,15 +88,6 @@ static bool dht_protocol_receive40bits(const uint8_t dataPin, DHTdataSet* dataSe
 }
 
 
-/** initialises hardware for the dht protocol */
-void dht_protocol_init(const uint8_t dataPin)
-{
-    // do not interfere with data line for for 1 second.
-    pinMode(dataPin, INPUT);
-    delay(1000);
-}
-
-
 /** @returns true if filled valid data into dataSet, false otherwise */
 bool dht_protocol_readData(const uint8_t dataPin, DHTdataSet* dataSet)
 {
