@@ -66,5 +66,6 @@ void loop()
     LCDisplay.print(temperature_str);
     LCDisplay.setCursor(0, 1);
     LCDisplay.print(humidity_str);
+    pinToggle(LED_BUILTIN);
     delay(SAMPLING_RATE_MS);
 }
